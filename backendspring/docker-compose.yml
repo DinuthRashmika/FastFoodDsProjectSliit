@@ -1,0 +1,288 @@
+version: '3.8'
+
+services:
+  # Order Service
+  order-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://order-db:5432/orderdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - RABBITMQ_HOST=rabbitmq
+      - NOTIFICATION_SERVICE_URL=http://notification-service:8086
+    depends_on:
+      - order-db
+      - discovery-service
+      - rabbitmq
+    networks:
+      - microservices-network
+
+  # Delivery Service
+  delivery-service:
+    image: openjdk:17-jdk-slim
+    working_dir: /app
+    volumes:
+      - ./delivery-service:/app
+    command: java -jar delivery-service.jar
+    ports:
+      - "8087:8087"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://delivery-db:5432/deliverydb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - RABBITMQ_HOST=rabbitmq
+      - MAPS_API_KEY=your_google_maps_api_key
+    depends_on:
+      - delivery-db
+      - discovery-service
+      - rabbitmq
+    networks:
+      - microservices-network
+
+  # Notification Service
+  notification-service:
+    image: openjdk:17-jdk-slim
+    working_dir: /app
+    volumes:
+      - ./notification-service:/app
+    command: java -jar notification-service.jar
+    ports:
+      - "8086:8086"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
+      - SPRING_MAIL_HOST=smtp.example.com
+      - SPRING_MAIL_PORT=587
+      - SPRING_MAIL_USERNAME=your_email@example.com
+      - SPRING_MAIL_PASSWORD=your_email_password
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH=true
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE=true
+      - RABBITMQ_HOST=rabbitmq
+    depends_on:
+      - discovery-service
+      - rabbitmq
+    networks:
+      - microservices-network
+
+  # Discovery Service (Eureka)
+  discovery-service:
+    image: netflixoss/eureka:2.2.2
+    ports:
+      - "8761:8761"
+    networks:
+      - microservices-network
+
+  # API Gateway
+  api-gateway:
+    image: openjdk:17-jdk-slim
+    working_dir: /app
+    volumes:
+      - ./api-gateway:/app
+    command: java -jar gateway.jar
+    ports:
+      - "8080:8080"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
+    depends_on:
+      - discovery-service
+    networks:
+      - microservices-network
+
+  # Product Service
+  product-service:
+    image: openjdk:17-jdk-slim
+    working_dir: /app
+    volumes:
+      - ./product-service:/app
+    command: java -jar product-service.jar
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://product-db:5432/productdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      - product-db
+      - discovery-service
+    networks:
+      - microservices-network
+
+  # User Service
+  user-service:
+    image: openjdk:17-jdk-slim
+    working_dir: /app
+    volumes:
+      - ./user-service:/app
+    command: java -jar user-service.jar
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://user-db:5432/userdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      - user-db
+      - discovery-service
+    networks:
+      - microservices-network
+
+  # Payment Service
+  payment-service:
+    image: openjdk:17-jdk-slim
+    working_dir: /app
+    volumes:
+      - ./payment-service:/app
+    command: java -jar payment-service.jar
+    ports:
+      - "8083:8083"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
+      - RABBITMQ_HOST=rabbitmq
+    depends_on:
+      - discovery-service
+      - rabbitmq
+    networks:
+      - microservices-network
+
+  # Inventory Service
+  inventory-service:
+    image: openjdk:17-jdk-slim
+    working_dir: /app
+    volumes:
+      - ./inventory-service:/app
+    command: java -jar inventory-service.jar
+    ports:
+      - "8085:8085"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://inventory-db:5432/inventorydb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      - inventory-db
+      - discovery-service
+    networks:
+      - microservices-network
+
+  # Databases
+  order-db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=orderdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - order-data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  product-db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=productdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - product-data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  user-db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=userdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5434:5432"
+    volumes:
+      - user-data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  inventory-db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=inventorydb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5435:5432"
+    volumes:
+      - inventory-data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  delivery-db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=deliverydb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5436:5432"
+    volumes:
+      - delivery-data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  # Monitoring
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - discovery-service
+    networks:
+      - microservices-network
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    networks:
+      - microservices-network
+
+  # Message Broker
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    networks:
+      - microservices-network
+
+volumes:
+  order-data:
+  product-data:
+  user-data:
+  inventory-data:
+  delivery-data:
+  grafana-data:
+
+networks:
+  microservices-network:
+    driver: bridge

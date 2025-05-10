@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/deliverySerice/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/deliveryService/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/deliveryServices/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/notificationServices/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/orderServices/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/restaurantServices/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/userServices/src/main/java" charset="UTF-8" />
+  </component>
+</project>

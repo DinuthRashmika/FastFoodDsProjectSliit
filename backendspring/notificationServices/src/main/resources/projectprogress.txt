@@ -1,0 +1,11 @@
+1. Basic Structure - Controller, Service, Repo, Model
+
+2. Implement Email logic in Service
+- SMTP
+
+3. Other services can call Notification
+
+-> connect with other 
+-> their payload and code
+-> web client
+-> sms video and code 

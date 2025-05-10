@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Uber Eats</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+    .email-container {
+      max-width: 700px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 30px;
+      margin: auto;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    .header {
+      font-family:'Poppins', sans-serif;
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 15px;
+      border-radius: 6px;
+      /* display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 20px; */
+    }
+    .header_title {
+      font-style: normal;
+      font-size: 45px;
+      margin: 0 0 8px 0;
+      /* text-align: center; */
+    }
+    .header_desc {
+      font-style: normal;
+      font-size: 20px;
+      margin: 0;
+    }
+    .header img {
+      width: 100px;
+      height: 100px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .content {
+      margin-top: 20px;
+      font-size: 16px;
+      color: #333333;
+    }
+    .footer {
+      margin-top: 30px;
+      font-size: 12px;
+      color: #888888;
+      text-align: center;
+    }
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      margin-top: 20px;
+      background-color: #4CAF50;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="email-container">
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #4CAF50; color: #ffffff; border-radius: 6px; border: 0; text-align: center;">
+      <tr>
+        <td style="padding: 20px;">
+
+          <img src="cid:logo.jpg" alt="Order Service Logo" width="100" height="100" style="border-radius: 8px; display: block; align-items: flex-start; " />
+    
+          <p style="font-size: 45px; margin: 10px 0 5px 0; font-family: 'Segoe UI', sans-serif; text-align: left;">We have a new Alert for you</p>
+
+        </td>
+      </tr>
+    </table>
+    
+
+    <div class="content">
+        <p>Hello Administrator,</p>
+        <p>{{message}}</p><hr>
+
+        <div>
+          <img src="cid:ubereats2.png" alt="Order Service Logo" style="width: 128px; height: 72px; border-radius: 8px;" />
+        </div>
+        
+    </div>
+
+    <div class="footer">
+        <p>Thank you for ordering with Our Ordering Service!</p>
+        <p>&copy; 2025 Ordering Service. All rights reserved.</p>
+    </div>
+
+  </div>
+</body>
+</html>

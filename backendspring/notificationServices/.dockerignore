@@ -1,0 +1,45 @@
+# .dockerignore for Notification Service
+
+# Ignore all files by default
+*
+
+# Allow specific files/directories needed for the build
+!src/
+!pom.xml
+!mvnw
+!.mvn/
+
+# Exclude unnecessary files
+**/.git
+**/.gitignore
+**/.gitmodules
+**/.project
+**/.classpath
+**/.settings/
+**/.idea/
+**/*.iml
+**/target/
+**/bin/
+**/*.log
+**/*.swp
+**/*.swo
+**/node_modules/
+**/.DS_Store
+**/docker-compose.yml
+**/docker-compose.*.yml
+**/README.md
+**/LICENSE
+**/helm/
+**/kubernetes/
+**/test/
+**/.github/
+
+# Exclude local development files
+**/application-dev.properties
+**/application-local.properties
+**/logs/
+
+# Exclude IDE specific files
+**/.vscode/
+**/*.bak
+**/*.tmp
