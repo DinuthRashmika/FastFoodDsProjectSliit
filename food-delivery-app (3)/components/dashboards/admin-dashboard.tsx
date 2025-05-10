@@ -1002,16 +1002,22 @@ export default function AdminDashboard({ user }) {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {[1, 2, 3, 4, 5].map((i) => (
+                      {["dinuth", "rashmika", "kavishka", "shenal", "ruwantha"].map((name,i) => (
                           <div key={i} className="flex items-center justify-between border-b pb-2">
                             <div className="flex items-center">
-                              <div className="w-10 h-10 rounded-full bg-gray-200 mr-3"></div>
-                              <div>
-                                <p className="font-medium">User {i}</p>
-                                <p className="text-sm text-gray-500">user{i}@example.com</p>
+                              <td className="px-1 py-2 whitespace-nowrap text-sm text-gray-500">
+                                <img
+                                    className="flex-shrink-0 h-10 w-10 rounded-full object-cover"
+                                    src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
+                                    alt="User"
+                                />
+                              </td>
+                              <div className="px-5 ">
+                                <p className="font-medium">{name}</p>
+                                <p className="text-sm text-gray-500">{name}@gmail.com</p>
                               </div>
                             </div>
-                            <div className="text-sm text-gray-500">2 hours ago</div>
+                            <div className="text-sm text-gray-500">{i+1} hours ago</div>
                           </div>
                       ))}
                     </div>
@@ -1023,11 +1029,11 @@ export default function AdminDashboard({ user }) {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {[1, 2, 3, 4, 5].map((i) => (
+                      {[1, 2, 3, 4, 5,6].map((i) => (
                           <div key={i} className="flex items-center justify-between border-b pb-2">
                             <div>
-                              <p className="font-medium">Order #{1000 + i}</p>
-                              <p className="text-sm text-gray-500">Restaurant {i}</p>
+                              <p className="font-medium">Order {1000 + i}</p>
+                              <p className="text-sm text-gray-500">Restaurant {i+11}</p>
                             </div>
                             <div className="text-sm">
                           <span
