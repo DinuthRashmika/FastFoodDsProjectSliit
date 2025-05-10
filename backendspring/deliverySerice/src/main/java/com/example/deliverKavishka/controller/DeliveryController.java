@@ -17,7 +17,7 @@ public class DeliveryController {
 
     //create delivery
     @PostMapping
-    public ResponseEntity<Delivery> createDelivery(@RequestBody DeliveryDTO deliveryDTO) {
+    public ResponseEntity<?> createDelivery(@RequestBody DeliveryDTO deliveryDTO) {
         Delivery delivery = deliveryService.createDelivery(deliveryDTO);
         return ResponseEntity.ok(delivery);
     }
@@ -37,7 +37,13 @@ public class DeliveryController {
 
     // can see the all delivery details of driver side
     @GetMapping
-    public ResponseEntity<Iterable<Delivery>> getAllDeliveries() {
+    public ResponseEntity<?> getAllDeliveries() {
         return ResponseEntity.ok(deliveryService.getAllDeliveries());
+    }
+
+    @PutMapping("/{id}/accpet")
+    public ResponseEntity<Delivery> accept(@PathVariable String id) {
+        Delivery delivery = deliveryService.check(id);
+        return ResponseEntity.ok(delivery);
     }
 }

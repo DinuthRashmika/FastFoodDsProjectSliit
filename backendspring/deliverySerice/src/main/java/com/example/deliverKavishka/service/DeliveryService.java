@@ -59,6 +59,30 @@ public class DeliveryService {
 
         return deliveryRepository.save(delivery);
     }
+    public Delivery check(String deliveryId) {
+        Delivery delivery = deliveryRepository.findById(deliveryId)
+                .orElseThrow(() -> new RuntimeException("Delivery not found"));
+
+        if (delivery.getStatus() != TrackingStatus.PENDING) {
+            throw new RuntimeException("Delivery already has a driver assigned");
+        }
+
+        // Find nearest available driver
+        List<Driver> nearestDrivers = driverService.findNearestDrivers(delivery.getRestaurantLocation(), 1);
+        if (nearestDrivers.isEmpty()) {
+            throw new RuntimeException("No available drivers found");
+        }
+
+        Driver driver = nearestDrivers.get(0);
+        delivery.setDriverId(driver.getId());
+        delivery.setStatus(TrackingStatus.ASSIGNED);
+        delivery.setUpdatedAt(LocalDateTime.now());
+
+        // Mark driver as unavailable
+        driverService.updateDriverAvailability(driver.getId(), false);
+
+        return deliveryRepository.save(delivery);
+    }
 
     public Delivery updateDeliveryStatus(String deliveryId, TrackingStatus status) {
         Delivery delivery = deliveryRepository.findById(deliveryId)
