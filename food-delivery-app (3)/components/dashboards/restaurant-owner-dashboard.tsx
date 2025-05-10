@@ -1134,10 +1134,7 @@ export default function RestaurantOwnerDashboard({ user }) {
                       <thead className="bg-gray-50">
                         <tr>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Order ID
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Customer
+                            Order Number
                           </th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Total
@@ -1155,12 +1152,11 @@ export default function RestaurantOwnerDashboard({ user }) {
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
                         {filteredOrders.length > 0 ? (
-                          filteredOrders.map((order) => (
+                          filteredOrders.map((order,index) => (
                             <tr key={order.id}>
                               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                #{order.id}
+                                {index + 1}
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.customerId}</td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 ${order.totalPrice.toFixed(2)}
                               </td>
@@ -1461,8 +1457,129 @@ export default function RestaurantOwnerDashboard({ user }) {
                     </Card>
                   </div>
 
-                  <div className="h-80 bg-gray-100 rounded-md flex items-center justify-center">
-                    <p className="text-gray-500">Revenue chart will be displayed here</p>
+                  <div className="h-80 bg-gray-100 rounded-md p-4 flex flex-col">
+                    <h3 className="text-lg font-medium text-gray-700 mb-2">Sales Last 12 Months</h3>
+                    <div className="flex-1 flex items-end space-x-1">
+                      {/* January */}
+                      <div className="flex-1 flex flex-col items-center">
+                        <div
+                            className="w-full bg-green-500 rounded-t hover:bg-green-600 transition-colors"
+                            style={{ height: '40%' }}
+                            title="January: 240 units"
+                        ></div>
+                        <span className="text-xs text-gray-500 mt-1">Jan</span>
+                      </div>
+
+                      {/* February */}
+                      <div className="flex-1 flex flex-col items-center">
+                        <div
+                            className="w-full bg-green-500 rounded-t hover:bg-green-600 transition-colors"
+                            style={{ height: '35%' }}
+                            title="February: 210 units"
+                        ></div>
+                        <span className="text-xs text-gray-500 mt-1">Feb</span>
+                      </div>
+
+                      {/* March */}
+                      <div className="flex-1 flex flex-col items-center">
+                        <div
+                            className="w-full bg-green-500 rounded-t hover:bg-green-600 transition-colors"
+                            style={{ height: '50%' }}
+                            title="March: 300 units"
+                        ></div>
+                        <span className="text-xs text-gray-500 mt-1">Mar</span>
+                      </div>
+
+                      {/* April */}
+                      <div className="flex-1 flex flex-col items-center">
+                        <div
+                            className="w-full bg-green-500 rounded-t hover:bg-green-600 transition-colors"
+                            style={{ height: '55%' }}
+                            title="April: 330 units"
+                        ></div>
+                        <span className="text-xs text-gray-500 mt-1">Apr</span>
+                      </div>
+
+                      {/* May */}
+                      <div className="flex-1 flex flex-col items-center">
+                        <div
+                            className="w-full bg-green-500 rounded-t hover:bg-green-600 transition-colors"
+                            style={{ height: '60%' }}
+                            title="May: 360 units"
+                        ></div>
+                        <span className="text-xs text-gray-500 mt-1">May</span>
+                      </div>
+
+                      {/* June */}
+                      <div className="flex-1 flex flex-col items-center">
+                        <div
+                            className="w-full bg-green-500 rounded-t hover:bg-green-600 transition-colors"
+                            style={{ height: '75%' }}
+                            title="June: 450 units"
+                        ></div>
+                        <span className="text-xs text-gray-500 mt-1">Jun</span>
+                      </div>
+
+                      {/* July */}
+                      <div className="flex-1 flex flex-col items-center">
+                        <div
+                            className="w-full bg-green-500 rounded-t hover:bg-green-600 transition-colors"
+                            style={{ height: '80%' }}
+                            title="July: 480 units"
+                        ></div>
+                        <span className="text-xs text-gray-500 mt-1">Jul</span>
+                      </div>
+
+                      {/* August */}
+                      <div className="flex-1 flex flex-col items-center">
+                        <div
+                            className="w-full bg-green-500 rounded-t hover:bg-green-600 transition-colors"
+                            style={{ height: '70%' }}
+                            title="August: 420 units"
+                        ></div>
+                        <span className="text-xs text-gray-500 mt-1">Aug</span>
+                      </div>
+
+                      {/* September */}
+                      <div className="flex-1 flex flex-col items-center">
+                        <div
+                            className="w-full bg-green-500 rounded-t hover:bg-green-600 transition-colors"
+                            style={{ height: '65%' }}
+                            title="September: 390 units"
+                        ></div>
+                        <span className="text-xs text-gray-500 mt-1">Sep</span>
+                      </div>
+
+                      {/* October */}
+                      <div className="flex-1 flex flex-col items-center">
+                        <div
+                            className="w-full bg-green-500 rounded-t hover:bg-green-600 transition-colors"
+                            style={{ height: '85%' }}
+                            title="October: 510 units"
+                        ></div>
+                        <span className="text-xs text-gray-500 mt-1">Oct</span>
+                      </div>
+
+                      {/* November */}
+                      <div className="flex-1 flex flex-col items-center">
+                        <div
+                            className="w-full bg-green-500 rounded-t hover:bg-green-600 transition-colors"
+                            style={{ height: '90%' }}
+                            title="November: 540 units"
+                        ></div>
+                        <span className="text-xs text-gray-500 mt-1">Nov</span>
+                      </div>
+
+                      {/* December */}
+                      <div className="flex-1 flex flex-col items-center">
+                        <div
+                            className="w-full bg-green-500 rounded-t hover:bg-green-600 transition-colors"
+                            style={{ height: '95%' }}
+                            title="December: 570 units"
+                        ></div>
+                        <span className="text-xs text-gray-500 mt-1">Dec</span>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="border rounded-md p-4">

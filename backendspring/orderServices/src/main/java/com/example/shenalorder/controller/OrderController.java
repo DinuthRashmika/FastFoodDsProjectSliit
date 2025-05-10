@@ -121,10 +121,6 @@ public class OrderController {
 
             Order order = orderOpt.get();
 
-            if (order.getStatus() != "CREATED") {
-                return ResponseEntity.badRequest().body(Map.of("error", "Order already paid or processed"));
-            }
-
             ProductRequest productRequest = new ProductRequest();
             productRequest.setAmount(order.getTotalPrice() * 100);
             productRequest.setQuantity(1L);
