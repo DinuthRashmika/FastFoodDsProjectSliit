@@ -323,24 +323,7 @@ export default function RestaurantOwnerDashboard({ user }) {
       setError(err.message || "An error occurred while fetching drivers")
       console.error(err)
       // For demo purposes, set some sample data if API fails
-      setDrivers([
-        {
-          id: "1",
-          name: "John Doe",
-          vehicleNumber: "ABC-1234",
-          phoneNumber: "555-1111",
-          currentLocation: { latitude: 37.7749, longitude: -122.4194 },
-          available: true,
-        },
-        {
-          id: "2",
-          name: "Jane Smith",
-          vehicleNumber: "DEF-5678",
-          phoneNumber: "555-2222",
-          currentLocation: { latitude: 37.7833, longitude: -122.4167 },
-          available: true,
-        },
-      ])
+
     } finally {
       setLoading(false)
     }
@@ -402,40 +385,6 @@ export default function RestaurantOwnerDashboard({ user }) {
       setError(err.message || "An error occurred while fetching drivers")
       console.error(err)
       // For demo purposes, set some sample data if API fails
-      setAvailableDrivers([
-        {
-          id: "1",
-          name: "John Doe",
-          vehicleNumber: "ABC-1234",
-          phoneNumber: "555-1111",
-          currentLocation: { latitude: 37.7749, longitude: -122.4194 },
-          available: true,
-        },
-        {
-          id: "2",
-          name: "Jane Smith",
-          vehicleNumber: "DEF-5678",
-          phoneNumber: "555-2222",
-          currentLocation: { latitude: 37.7833, longitude: -122.4167 },
-          available: false,
-        },
-        {
-          id: "3",
-          name: "Bob Johnson",
-          vehicleNumber: "GHI-9012",
-          phoneNumber: "555-3333",
-          currentLocation: { latitude: 37.7694, longitude: -122.4862 },
-          available: true,
-        },
-        {
-          id: "4",
-          name: "Sarah Williams",
-          vehicleNumber: "JKL-3456",
-          phoneNumber: "555-4444",
-          currentLocation: { latitude: 37.7831, longitude: -122.4039 },
-          available: false,
-        },
-      ])
       setIsViewDriversDialogOpen(true)
     } finally {
       setLoadingDrivers(false)
@@ -1133,9 +1082,7 @@ export default function RestaurantOwnerDashboard({ user }) {
                     <table className="min-w-full divide-y divide-gray-200">
                       <thead className="bg-gray-50">
                         <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Order ID
-                          </th>
+
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Customer
                           </th>
@@ -1157,9 +1104,7 @@ export default function RestaurantOwnerDashboard({ user }) {
                         {filteredOrders.length > 0 ? (
                           filteredOrders.map((order) => (
                             <tr key={order.id}>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                #{order.id}
-                              </td>
+
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.customerId}</td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 ${order.totalPrice.toFixed(2)}
@@ -1531,43 +1476,47 @@ export default function RestaurantOwnerDashboard({ user }) {
               <p className="text-sm text-gray-500">All delivery drivers and their current availability status.</p>
 
               {loadingDrivers ? (
-                <div className="flex justify-center items-center h-20">
-                  <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
-                </div>
+                  <div className="flex justify-center items-center h-20">
+                    <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+                  </div>
               ) : (
-                <div className="space-y-2">
-                  {availableDrivers.length > 0 ? (
-                    availableDrivers.map((driver) => (
-                      <div key={driver.id} className="flex items-center justify-between p-3 border rounded-md">
-                        <div className="flex items-center">
-                          <div className="h-10 w-10 rounded-full bg-gray-200 mr-3"></div>
-                          <div>
-                            <p className="font-medium">{driver.name}</p>
-                            <p className="text-xs text-gray-500">
-                              {driver.vehicleNumber} • {driver.phoneNumber}
-                            </p>
-                            <Badge
-                              className={driver.available ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}
-                            >
-                              {driver.available ? "Available": "Unavailable"}
-                            </Badge>
-                          </div>
+                  <div className="space-y-2">
+                    {availableDrivers.length > 0 ? (
+                        availableDrivers.map((driver) => (
+                            <div key={driver.id} className="flex items-center justify-between p-3 border rounded-md">
+                              <div className="flex items-center">
+                                <div className="h-10 w-10 rounded-full bg-gray-200 mr-3"></div>
+                                <div>
+                                  <p className="font-medium">{driver.name}</p>
+                                  <p className="text-xs text-gray-500">
+                                    {driver.vehicleNumber} • {driver.phoneNumber}
+                                  </p>
+                                  <Button
+                                      variant="outline"
+                                      className={!driver.available
+                                          ? "bg-green-100 text-green-800 hover:bg-green-100 hover:text-green-800"
+                                          : "bg-red-100 text-red-800 hover:bg-red-100 hover:text-red-800"}
+                                      size="sm"
+                                  >
+                                    {!driver.available ? "Available" : "Unavailable"}
+                                  </Button>
+                                </div>
+                              </div>
+                              <div className="text-sm text-gray-500">
+                                <p>Current Location:</p>
+                                <p className="text-xs">
+                                  Lat: {driver.currentLocation?.latitude.toFixed(4) || "N/A"}, Lng:{" "}
+                                  {driver.currentLocation?.longitude.toFixed(4) || "N/A"}
+                                </p>
+                              </div>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="text-center p-4 border rounded-md">
+                          <p className="text-gray-500">No available drivers found at the moment.</p>
                         </div>
-                        <div className="text-sm text-gray-500">
-                          <p>Current Location:</p>
-                          <p className="text-xs">
-                            Lat: {driver.currentLocation?.latitude.toFixed(4) || "N/A"}, Lng:{" "}
-                            {driver.currentLocation?.longitude.toFixed(4) || "N/A"}
-                          </p>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="text-center p-4 border rounded-md">
-                      <p className="text-gray-500">No available drivers found at the moment.</p>
-                    </div>
-                  )}
-                </div>
+                    )}
+                  </div>
               )}
 
               <DialogFooter>

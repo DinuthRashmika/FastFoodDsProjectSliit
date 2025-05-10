@@ -3,6 +3,7 @@ package com.nexests.nexests.config;
 import com.nexests.nexests.filter.JWTFilter;
 import com.nexests.nexests.repository.UserRepository;
 import com.nexests.nexests.service.MyUserDetailsService;
+import com.nexests.nexests.filter.OAuth2LoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -30,10 +31,12 @@ import java.util.Collections;
 public class SecurityConfig {
     private final UserRepository userRepository;
     private final JWTFilter jwtFilter;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
-    public SecurityConfig(UserRepository userRepository, JWTFilter jwtFilter) {
+    public SecurityConfig(UserRepository userRepository, JWTFilter jwtFilter, OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler) {
         this.userRepository = userRepository;
         this.jwtFilter = jwtFilter;
+        this.oAuth2LoginSuccessHandler = oAuth2LoginSuccessHandler;
     }
 
     @Bean
@@ -67,6 +70,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/hi").hasAuthority("ROLE_CUSTOMER")
 
                         .anyRequest().authenticated()
+
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(b -> b.disable())
@@ -79,6 +83,7 @@ public class SecurityConfig {
                             response.sendError(HttpStatus.FORBIDDEN.value(), "Forbidden");
                         })
                 )
+                .oauth2Login(oauth -> oauth.successHandler(oAuth2LoginSuccessHandler))
                 .build();
     }
 

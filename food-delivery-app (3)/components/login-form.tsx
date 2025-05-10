@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { AlertCircle } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { FcGoogle } from "react-icons/fc"
 
 export default function LoginForm() {
   const [username, setUsername] = useState("")
@@ -51,71 +52,101 @@ export default function LoginForm() {
     }
   }
 
+  const handleGoogleLogin = () => {
+    // Redirect to your backend OAuth2 endpoint
+    window.location.href = "http://localhost:8082/oauth2/authorization/google"
+  }
+
   return (
-    <Card className="border border-gray-200">
-      <CardHeader>
-        <CardTitle className="text-2xl">Login</CardTitle>
-        <CardDescription>Enter your credentials to access your account</CardDescription>
-      </CardHeader>
-      <CardContent>
-        {error && (
-          <Alert variant="destructive" className="mb-4">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="username">Username</Label>
-            <Input
-              id="username"
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              placeholder="Enter your username"
-              className="border-gray-300"
-            />
+      <Card className="border border-gray-200 max-w-md mx-auto">
+        <CardHeader>
+          <CardTitle className="text-2xl text-center w-full">Login</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {error && (
+              <Alert variant="destructive" className="mb-4">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+          )}
+
+          {/* Google OAuth Button */}
+
+
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="Enter your password"
-              className="border-gray-300"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="role">Role</Label>
-            <select
-              id="role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="username">Username</Label>
+              <Input
+                  id="username"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                  placeholder="Enter your username"
+                  className="border-gray-300"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder="Enter your password"
+                  className="border-gray-300"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="role">Role</Label>
+              <select
+                  id="role"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
+              >
+                <option value="CUSTOMER">Customer</option>
+                <option value="RESTAURANT_ADMIN">System Admin</option>
+                <option value="RESTAURANT_OWNER">Restaurant Owner</option>
+                <option value="DELIVERY_PERSONNEL">Delivery Personnel</option>
+              </select>
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-background px-2 text-muted-foreground">
+              Or continue with
+            </span>
+            </div>
+            <Button type="submit" className="w-full bg-black hover:bg-gray-800" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </Button>
+            <p className=" text-center w-full">Enter your credentials to access your account
+            </p>
+            <Button
+                variant="outline"
+                className="w-full mb-6 gap-2"
+                onClick={handleGoogleLogin}
             >
-              <option value="CUSTOMER">Customer</option>
-              <option value="RESTAURANT_ADMIN">System Admin</option>
-              <option value="RESTAURANT_OWNER">Restaurant Owner</option>
-              <option value="DELIVERY_PERSONNEL">Delivery Personnel</option>
-            </select>
-          </div>
-          <Button type="submit" className="w-full bg-black hover:bg-gray-800" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
-          </Button>
-        </form>
-      </CardContent>
-      <CardFooter className="flex justify-center">
-        <p className="text-sm text-gray-600">
-          Don&apos;t have an account?{" "}
-          <Link href="/register" className="text-black font-medium hover:underline">
-            Register as Customer
-          </Link>
-        </p>
-      </CardFooter>
-    </Card>
+              <FcGoogle className="h-5 w-5" />
+              Continue with Google
+            </Button>
+          </form>
+        </CardContent>
+        <CardFooter className="flex justify-center">
+          <p className="text-sm text-gray-600">
+            Don&apos;t have an account?{" "}
+            <Link href="/register" className="text-black font-medium hover:underline">
+              Register as Customer
+            </Link>
+          </p>
+        </CardFooter>
+      </Card>
   )
 }
