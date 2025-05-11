@@ -5,7 +5,8 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the JAR file (you’ll build this using mvn package)
-COPY target/*.jar app.jar
+C
+
 
 # Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
