@@ -76,7 +76,6 @@ export default function RegisterForm() {
   return (
     <Card className="border border-gray-200">
       <CardHeader>
-        <CardTitle className="text-2xl">Register as Customer</CardTitle>
         <CardDescription>Create your customer account</CardDescription>
       </CardHeader>
       <CardContent>
