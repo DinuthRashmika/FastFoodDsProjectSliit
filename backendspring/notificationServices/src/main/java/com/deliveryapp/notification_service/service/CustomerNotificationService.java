@@ -53,7 +53,7 @@ public class CustomerNotificationService {
                 logger.info("Logger - Sending SMS to " + notification.getRecipientPhone() + " :loggers");
                 smsService.sendSMS(
                     notification.getRecipientPhone(), 
-                    "Hello Customer!\nYour order is on the way!\nOrder " + notification.getOrderId() +  " has been confirmed successfully!\n\nUber Eats Team ");
+                    "Hello Customer!\nYour order is on the way!\nOrder " + notification.getOrderId() +  " has been confirmed successfully!\n\nFast Food Team ");
 
                 
             }
