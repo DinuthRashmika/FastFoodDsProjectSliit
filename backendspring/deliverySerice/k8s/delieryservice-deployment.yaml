@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deliveryservice-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deliveryservice
+  template:
+    metadata:
+      labels:
+        app: deliveryservice
+    spec:
+      containers:
+        - name: deliveryservice
+          image: dinuthr/deliveryservice
+          ports:
+            - containerPort: 8087
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: delivery-service
+spec:
+  type: ClusterIP
+  selector:
+    app: deliveryservice
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8087

@@ -20,7 +20,7 @@ public class OrderController {
     private final OrderService orderService;
     private final StripeService stripeService;
 
-    // ✅ Constructor injection (recommended)
+    // ✅ Constructor
     public OrderController(OrderService orderService, StripeService stripeService) {
         this.orderService = orderService;
         this.stripeService = stripeService;
