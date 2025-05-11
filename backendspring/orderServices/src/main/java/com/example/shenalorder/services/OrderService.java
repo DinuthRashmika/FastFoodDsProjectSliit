@@ -4,31 +4,41 @@ import com.example.shenalorder.dto.OrderDto;
 import com.example.shenalorder.model.*;
 import com.example.shenalorder.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;import lombok.extern.slf4j.Slf4j;
+
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.example.shenalorder.model.OrderStatus.PREPARING;
 
+@Slf4j  // Add this annotation at the class level
 @Service
 public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+    private final WebClient webClient;
+    private final WebClient orderServiceWebClient;
+
+    public OrderService(WebClient webClient, WebClient orderServiceWebClient) {
+        this.webClient = webClient;
+        this.orderServiceWebClient = orderServiceWebClient;
+    }
 
     public Order createOrder(OrderDto orderDto) {
+        // Create and save the order
         Order order = new Order();
         order.setCustomerId(orderDto.getCustomerId());
         order.setRestaurantId(orderDto.getRestaurantId());
         order.setDeliveryAddress(orderDto.getDeliveryAddress());
         order.setSpecialInstructions(orderDto.getSpecialInstructions());
         order.setTotalPrice(orderDto.getTotalPrice());
-        order.setPhoneNumber(orderDto.getPhoneNumber()); // ✅ added
-        order.setDeliveryTimeSlot(orderDto.getDeliveryTimeSlot()); // ✅ added
+        order.setPhoneNumber(orderDto.getPhoneNumber());
+        order.setDeliveryTimeSlot(orderDto.getDeliveryTimeSlot());
         order.setStatus("CREATED");
         order.setCreatedAt(LocalDateTime.now());
         order.setUpdatedAt(LocalDateTime.now());
@@ -39,7 +49,7 @@ public class OrderService {
                     item.setItemId(UUID.randomUUID().toString());
                     item.setMenuItemId(itemDto.getMenuItemId());
                     item.setQuantity(itemDto.getQuantity());
-                    item.setName("Item " + itemDto.getMenuItemId()); // Placeholder
+                    item.setName("Item " + itemDto.getMenuItemId());
                     return item;
                 })
                 .collect(Collectors.toList());
@@ -54,7 +64,31 @@ public class OrderService {
 
         order.setStatusHistory(List.of(statusHistory));
 
-        return orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order);
+String email =  "pamalisr@gmail.com";
+        // Prepare notification payload
+        Map<String, Object> notificationPayload = new HashMap<>();
+        notificationPayload.put("orderId", savedOrder.getId());
+        notificationPayload.put("total", savedOrder.getTotalPrice());
+        notificationPayload.put("recipientEmail", email);
+        notificationPayload.put("recipientPhone", savedOrder.getPhoneNumber());
+
+
+
+        // Send notification asynchronously using WebClient
+        webClient.post()
+                .uri("http://localhost:8080/api/v1/notifications/customer/order-confirmed")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(notificationPayload)
+                .retrieve()
+                .toBodilessEntity()
+                .subscribe(
+                        response -> log.info("Notification sent successfully for order {}", savedOrder.getId()),
+                        error -> log.error("Failed to send notification for order {}: {}",
+                                savedOrder.getId(), error.getMessage())
+                );
+
+        return savedOrder;
     }
 
     public Optional<Order> getOrderById(String id) {

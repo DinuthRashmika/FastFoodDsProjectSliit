@@ -1,19 +1,11 @@
-# Dockerfile for restaurant service
-FROM openjdk:17-jdk-slim as build
-
-WORKDIR /app
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-COPY src ./src
-
-RUN chmod +x mvnw
-RUN ./mvnw clean package -DskipTests
-
+# Start from official Java image
 FROM openjdk:17-jdk-slim
 
+# Set working directory inside container
 WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
 
-EXPOSE 8081
+# Copy the JAR file (you’ll build this using mvn package)
+COPY target/*.jar app.jar
 
+# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]

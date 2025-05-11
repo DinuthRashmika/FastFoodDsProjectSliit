@@ -1,17 +1,11 @@
-# Dockerfile for Notification Service
-FROM eclipse-temurin:17-jdk-jammy as builder
-WORKDIR /workspace/app
+# Start from official Java image
+FROM openjdk:17-jdk-slim
 
-COPY . .
-RUN ./mvnw clean package -DskipTests
-
-FROM eclipse-temurin:17-jre-jammy
+# Set working directory inside container
 WORKDIR /app
 
-COPY --from=builder /workspace/app/target/*.jar app.jar
-COPY --from=builder /workspace/app/src/main/resources/templates/ /app/resources/templates/
-COPY --from=builder /workspace/app/src/main/resources/application.properties /app/resources/
+# Copy the JAR file (you’ll build this using mvn package)
+COPY target/*.jar app.jar
 
-EXPOSE 8080
-
+# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
