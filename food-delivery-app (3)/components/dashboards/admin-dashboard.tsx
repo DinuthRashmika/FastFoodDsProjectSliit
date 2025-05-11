@@ -1029,11 +1029,11 @@ export default function AdminDashboard({ user }) {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {[1, 2, 3, 4, 5,6].map((i) => (
+                      {[1, 2, 3, 4, 5].map((i) => (
                           <div key={i} className="flex items-center justify-between border-b pb-2">
                             <div>
                               <p className="font-medium">Order {1000 + i}</p>
-                              <p className="text-sm text-gray-500">Restaurant {i+11}</p>
+                              <p className="text-sm text-gray-500">Restaurant {i}</p>
                             </div>
                             <div className="text-sm">
                           <span

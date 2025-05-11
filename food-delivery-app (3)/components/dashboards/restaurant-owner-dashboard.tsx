@@ -1664,9 +1664,9 @@ export default function RestaurantOwnerDashboard({ user }) {
                               {driver.vehicleNumber} • {driver.phoneNumber}
                             </p>
                             <Badge
-                              className={driver.available ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}
+                              className={driver.available ? "bg-green-100 text-green-800" : "bg-green-100 text-green-800"}
                             >
-                              {driver.available ? "Available": "Unavailable"}
+                              {driver.available ? "Online ": "Online"}
                             </Badge>
                           </div>
                         </div>
