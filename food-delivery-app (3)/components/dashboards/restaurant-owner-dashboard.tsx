@@ -71,7 +71,7 @@ export default function RestaurantOwnerDashboard({ user }) {
       const restaurantId = user.id || localStorage.getItem("restaurantId")
 
       if (!restaurantId) {
-        throw new Error("Restaurant ID not found")
+        throw new Error("Login Sucessfull")
       }
 
       const response = await fetch(`http://localhost:8081/api/v1/restaurant/getuserbyid/${restaurantId}`, {
